@@ -1,0 +1,107 @@
+---
+# defaults file for niki
+
+niki_hostname: "albireo"
+niki_username: "niki"
+niki_homedir: "/home/{{ niki_username }}"
+niki_group_primary: "niki"
+niki_group_additional:
+  - "libvirt"
+
+niki_required_dirs:
+  - path: "{{ niki_homedir }}/git"
+    owner: "{{ niki_username }}"
+    group: "{{ niki_group_primary }}"
+    mode: 755
+
+  - path: "{{ niki_homedir }}/scripts"
+    owner: "{{ niki_username }}"
+    group: "{{ niki_group_primary }}"
+    mode: 755
+
+niki_required_files:
+  - src: "RPM-GPG-KEY-rpmfusion-free-el-7"
+    dest: "/etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-el-7"
+    owner: "root"
+    group: "root"
+    mode: 644
+
+niki_rpm_repos:
+  - name: "google-chrome"
+    description: "Google Chrome official stable repository"
+    baseurl: "http://dl.google.com/linux/chrome/rpm/stable/x86_64"
+    gpgcheck: yes
+    gpgkey: "https://dl.google.com/linux/linux_signing_key.pub"
+    enabled: yes
+
+  # replaced y Vinagre
+  # - name: "hubbitus-remmina-next"
+  #   description: "Hubbitus repository for Remmina"
+  #   baseurl: "https://copr-be.cloud.fedoraproject.org/results/hubbitus/remmina-next/epel-7-$basearch"
+  #   gpgcheck: yes
+  #   gpgkey: "https://copr-be.cloud.fedoraproject.org/results/hubbitus/remmina-next/pubkey.gpg"
+  #   enabled: yes
+
+  - name: "slack"
+    description: "Slack repository"
+    baseurl: "https://packagecloud.io/slacktechnologies/slack/fedora/21/x86_64"
+    gpgcheck: no
+    enabled: yes
+
+  - name: "teamviewer"
+    description: "TeamViewer repository"
+    baseurl: "http://linux.teamviewer.com/yum/stable/main/binary-$basearch"
+    gpgcheck: yes
+    gpgkey: "http://linux.teamviewer.com/pubkey/TeamViewer2017.asc"
+    enabled: yes
+
+  - name: "rpmfusion-free-updates"
+    description: "RPM Fusion for EL7"
+    mirrorlist: "http://mirrors.rpmfusion.org/mirrorlist?repo=free-el-updates-released-7&arch=$basearch"
+    gpgcheck: yes
+    gpgkey: "file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmfusion-free-el-7"
+    enabled: yes
+
+niki_rpm_packages:
+  - "epel-release"
+  - "yum-cron"
+  - "terminator"
+  - "transmission"
+  - "git"
+  - "openvpn"
+  - "NetworkManager-openvpn"
+  - "@Virtualization Hypervisor"
+  - "@Virtualization Platform"
+  - "virt-manager"
+  - "gnome-shell-extension-gpaste"
+  - "gnome-shell-extension-top-icons"
+  - "google-chrome-stable"
+  # - "remmina"
+  # - "remmina-plugins-rdp"
+  - "slack"
+  - "teamviewer"
+  - "vlc"
+
+niki_git_repositories:
+  main:
+    repo: "https://github.com/eMCeee89/niki.git"
+    dest: "{{ niki_homedir }}/git"
+
+niki_required_templates:
+  - src: "yum-cron.conf.j2"
+    dest: "/etc/yum/yum-cron.conf"
+    backup: yes
+
+  - src: "sync-and-deploy.sh.j2"
+    dest: "{{ niki_homedir }}/scripts/sync-and-deploy.sh"
+    backup: no
+    owner: "{{ niki_username }}"
+    group: "{{ niki_group_primary }}"
+    mode: 750
+
+  - src: "desktop-placeholder.j2"
+    dest: "{{ niki_homedir }}/Desktop/sync-and-deploy.desktop"
+    backup: no
+    owner: "{{ niki_username }}"
+    group: "{{ niki_group_primary }}"
+    mode: 750

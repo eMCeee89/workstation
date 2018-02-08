@@ -1,0 +1,8 @@
+#!/bin/bash
+
+GIT_REPO_DIR="{{ niki_git_repositories['main']['dest'] }}"
+ANSIBLE_CMD="/usr/bin/ansible-playbook"
+ANSIBLE_PB_NAME="playbook.yml"
+
+
+cd ${GIT_REPO_DIR} && (git fetch && git reset --hard origin/master) && ${ANSIBLE_CMD} ${ANSIBLE_PB_NAME}

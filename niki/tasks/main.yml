@@ -1,0 +1,66 @@
+---
+# tasks file for niki
+
+- name: set hostname
+  hostname:
+    name: "{{ niki_hostname }}"
+
+- name: create required directory structures
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+    state: directory
+  with_items: "{{ niki_required_dirs }}"
+
+- name: deploy required files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  with_items: "{{ niki_required_files }}"
+
+- name: add required RPM repositories
+  yum_repository:
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+    baseurl: "{{ item.baseurl|default(omit) }}"
+    mirrorlist: "{{ item.mirrorlist|default(omit) }}"
+    gpgcheck: "{{ item.gpgcheck }}"
+    gpgkey: "{{ item.gpgkey|default(omit) }}"
+    enabled: "{{ item.enabled }}"
+    state: present
+  with_items: "{{ niki_rpm_repos }}"
+
+- name: add RPM gpg keys
+  rpm_key:
+    key: "{{ item.gpgkey|regex_replace('file://', '') }}"
+    state: present
+  when: item.gpgkey is defined
+  with_items: "{{ niki_rpm_repos }}"
+
+- name: install required RPM packages
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items: "{{ niki_rpm_packages }}"
+
+- name: clone repositories
+  git:
+    repo: "{{ item.value.repo }}"
+    dest: "{{ item.value.dest }}"
+    clone: yes
+  with_dict: "{{ niki_git_repositories }}"
+
+- name: deploy defined templates
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    backup: "{{ item.backup }}"
+    owner: "{{ item.owner |default(omit) }}"
+    group: "{{ item.group |default(omit) }}"
+    mode: "{{ item.mode |default(omit) }}"
+  with_items: "{{ niki_required_templates }}"
