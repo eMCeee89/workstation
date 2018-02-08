@@ -54,6 +54,7 @@
     dest: "{{ item.value.dest }}"
     clone: yes
   with_dict: "{{ niki_git_repositories }}"
+  become_user: "{{ niki_username }}"
 
 - name: deploy defined templates
   template:
