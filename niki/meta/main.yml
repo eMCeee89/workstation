@@ -1,6 +1,0 @@
-galaxy_info:
-  author: Majky
-  description: role for Niki
-  license: license (GPLv2, CC-BY, etc)
-
-  min_ansible_version: 2.2

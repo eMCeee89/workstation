@@ -4,4 +4,4 @@
   connection: local
   become: True
   roles:
-    - niki
+    - "workstation"

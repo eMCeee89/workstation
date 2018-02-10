@@ -1,0 +1,130 @@
+---
+# tasks file for workstation
+
+- name: include vars file
+  include_vars:
+    file: "{{ workstation_fella }}.yml"
+
+- name: set hostname
+  hostname:
+    name: "{{ workstation_hostname }}"
+
+- name: create required directory structures
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+    state: directory
+  with_items:
+    - "{{ workstation_required_dirs }}"
+    - "{{ workstation_default_required_dirs }}"
+
+- name: deploy required files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - "{{ workstation_required_files }}"
+    - "{{ workstation_default_required_files }}"
+
+- name: add required RPM repositories
+  yum_repository:
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+    baseurl: "{{ item.baseurl|default(omit) }}"
+    mirrorlist: "{{ item.mirrorlist|default(omit) }}"
+    gpgcheck: "{{ item.gpgcheck }}"
+    gpgkey: "{{ item.gpgkey|default(omit) }}"
+    enabled: "{{ item.enabled }}"
+    state: present
+  with_items:
+    - "{{ workstation_rpm_repos }}"
+    - "{{ workstation_default_rpm_repos }}"
+
+- name: add RPM repositories from RPM package
+  dnf:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - "{{ workstation_rpm_repo_packages }}"
+    - "{{ workstation_default_rpm_repo_packages }}"
+
+- name: add RPM gpg keys
+  rpm_key:
+    key: "{{ item.gpgkey|regex_replace('file://', '') }}"
+    state: present
+  when: item.gpgkey is defined
+  with_items:
+    - "{{ workstation_rpm_repos }}"
+    - "{{ workstation_default_rpm_repos }}"
+
+- name: install required RPM packages
+  dnf:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - "{{ workstation_rpm_packages }}"
+    - "{{ workstation_default_rpm_packages }}"
+
+- name: clone repositories
+  git:
+    repo: "{{ item.value.repo }}"
+    dest: "{{ item.value.dest }}"
+    clone: yes
+  with_dict:
+    - "{{ workstation_git_repositories }}"
+    - "{{ workstation_default_git_repositories }}"
+  become_user: "{{ workstation_username }}"
+
+- name: deploy defined templates
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    backup: "{{ item.backup }}"
+    owner: "{{ item.owner |default(omit) }}"
+    group: "{{ item.group |default(omit) }}"
+    mode: "{{ item.mode |default(omit) }}"
+  with_items:
+    - "{{ workstation_required_templates }}"
+    - "{{ workstation_default_required_templates }}"
+
+- name: create additional groups
+  user:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - "{{ workstation_default_groups_additional_create }}"
+    - "{{ workstation_groups_additional_create }}"
+
+- name: append user to additional groups
+  user:
+    name: "{{ workstation_username }}"
+    groups: "{{ item }}"
+    append: yes
+  with_items:
+    - "{{ workstation_default_groups_additional }}"
+    - "{{ workstation_groups_additional }}"
+
+- name: enable required systemd units
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+  with_items:
+    - "{{ workstation_enabled_systemd_units }}"
+    - "{{ workstation_default_enabled_systemd_units }}"
+
+- name: configure kernel parameters using sysctl
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+  with_items:
+    - "{{ workstation_sysctl_parameters }}"
+
+- name: include task files
+  include_tasks: "{{ item }}"
+  with_items: "{{ workstation_include_tasks }}"

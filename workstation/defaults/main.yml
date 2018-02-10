@@ -1,0 +1,70 @@
+---
+# defaults file for workstation
+
+workstation_default_groups_additional_create: []
+
+workstation_default_groups_additional:
+  - "libvirt"
+
+workstation_sysctl_parameters:
+  - name: "vm.swappiness"
+    value: 1
+
+workstation_default_required_dirs:
+  - path: "{{ workstation_homedir }}/git"
+    owner: "{{ workstation_username }}"
+    group: "{{ workstation_group_primary }}"
+    mode: 755
+
+  - path: "{{ workstation_homedir }}/.config/terminator"
+    owner: "{{ workstation_username }}"
+    group: "{{ workstation_group_primary }}"
+    mode: 755
+
+workstation_default_required_files: []
+
+workstation_default_rpm_repos:
+  - name: "google-chrome"
+    description: "Google Chrome official stable repository"
+    baseurl: "http://dl.google.com/linux/chrome/rpm/stable/x86_64"
+    gpgcheck: yes
+    gpgkey: "https://dl.google.com/linux/linux_signing_key.pub"
+    enabled: yes
+
+  - name: "slack"
+    description: "Slack repository"
+    baseurl: "https://packagecloud.io/slacktechnologies/slack/fedora/21/x86_64"
+    gpgcheck: no
+    enabled: yes
+
+workstation_default_rpm_repo_packages:
+  - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-28.noarch.rpm"
+
+workstation_default_rpm_packages:
+  - "https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm"
+  - "gnome-tweaks"
+  - "remmina"
+  - "terminator"
+  - "transmission"
+  - "@virtualization"
+  - "gnome-shell-extension-gpaste"
+  - "gnome-shell-extension-topicons-plus"
+  - "google-chrome-stable"
+  - "slack"
+  - "teamviewer"
+  - "vlc"
+  - "exfat-utils"
+  - "fuse-exfat"
+  - "libselinux-python"
+
+workstation_default_git_repositories: {}
+
+workstation_default_required_templates:
+  - src: "terminator_config.j2"
+    dest: "{{ workstation_homedir }}/.config/terminator/config"
+    backup: no
+    owner: "{{ workstation_username }}"
+    group: "{{ workstation_group_primary }}"
+    mode: 640
+
+workstation_default_enabled_systemd_units: []

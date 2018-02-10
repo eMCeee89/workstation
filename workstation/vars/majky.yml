@@ -1,0 +1,41 @@
+---
+# vars file for majky
+
+workstation_hostname: "altair"
+workstation_username: "majky"
+workstation_homedir: "/home/{{ workstation_username }}"
+workstation_group_primary: "majky"
+
+workstation_groups_additional_create:
+  - "docker"
+
+workstation_groups_additional:
+  - "docker"
+
+workstation_required_dirs: []
+
+workstation_required_files: []
+
+workstation_rpm_repos: []
+
+workstation_rpm_repo_packages: []
+
+workstation_rpm_packages:
+  #- "https://atom.io/download/rpm"
+  - "docker"
+  - "vagrant"
+  - "@Vagrant with libvirt support"
+  - "python2-molecule"
+  - "setroubleshoot-server"
+  - "java-1.8.0-openjdk-devel"
+  - "expect"
+  - "postgresql"
+  - "nmap"
+
+workstation_git_repositories: {}
+
+workstation_required_templates: []
+
+workstation_enabled_systemd_units: []
+
+workstation_include_tasks: []
