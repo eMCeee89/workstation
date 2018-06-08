@@ -29,7 +29,7 @@ workstation_rpm_repo_packages: []
 
 workstation_rpm_packages:
   - "kodi"
-  - "yum-cron"
+  - "dnf-automatic"
 
 workstation_git_repositories:
   main:
@@ -37,10 +37,6 @@ workstation_git_repositories:
     dest: "{{ workstation_homedir }}/git"
 
 workstation_required_templates:
-  - src: "yum-cron.conf.j2"
-    dest: "/etc/yum/yum-cron.conf"
-    backup: yes
-
   - src: "sync-and-deploy.sh.j2"
     dest: "{{ workstation_homedir }}/scripts/sync-and-deploy.sh"
     backup: no
@@ -49,7 +45,7 @@ workstation_required_templates:
     mode: 750
 
 workstation_enabled_systemd_units:
-  - "yum-cron.service"
+  - "dnf-automatic-install.timer"
 
 workstation_include_tasks:
   - "kodi.yml"
