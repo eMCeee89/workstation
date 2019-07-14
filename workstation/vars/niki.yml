@@ -31,6 +31,8 @@ workstation_rpm_packages:
   - "kodi"
   - "dnf-automatic"
 
+workstation_rpm_packages_remove: []
+
 workstation_git_repositories:
   main:
     repo: "https://github.com/eMCeee89/workstation.git"

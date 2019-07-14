@@ -37,8 +37,16 @@ workstation_default_rpm_repos:
     gpgcheck: no
     enabled: yes
 
+  - name: "docker-ce-stable"
+    description: "Docker CE stable repository"
+    #baseurl: "https://download.docker.com/linux/fedora/$releasever/$basearch/stable"
+    baseurl: "https://download.docker.com/linux/fedora/29/$basearch/stable"
+    gpgcheck: yes
+    gpgkey: "https://download.docker.com/linux/fedora/gpg"
+    enabled: yes
+
 workstation_default_rpm_repo_packages:
-  - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-28.noarch.rpm"
+  - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-30.noarch.rpm"
 
 workstation_default_rpm_packages:
   - "https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm"
@@ -56,6 +64,18 @@ workstation_default_rpm_packages:
   - "exfat-utils"
   - "fuse-exfat"
   - "libselinux-python"
+
+workstation_default_rpm_packages_remove:
+  - "docker"
+  - "docker-client"
+  - "docker-client-latest"
+  - "docker-common"
+  - "docker-latest"
+  - "docker-latest-logrotate"
+  - "docker-logrotate"
+  - "docker-selinux"
+  - "docker-engine-selinux"
+  - "docker-engine"
 
 workstation_default_git_repositories: {}
 

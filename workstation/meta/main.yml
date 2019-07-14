@@ -1,6 +1,6 @@
 galaxy_info:
   author: Majky
-  description: role for Niki
+  description: role for a workstation provisioning
   license: license (GPLv2, CC-BY, etc)
 
   min_ansible_version: 2.2

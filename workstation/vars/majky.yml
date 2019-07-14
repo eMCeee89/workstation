@@ -21,25 +21,31 @@ workstation_rpm_repos: []
 workstation_rpm_repo_packages: []
 
 workstation_rpm_packages:
-  #- "https://atom.io/download/rpm"
-  - "docker"
+  - "https://atom.io/download/rpm"
   - "vagrant"
   - "@Vagrant with libvirt support"
-  - "python2-molecule"
-  - "python2-boto"
-  - "python2-netaddr"
-  - "python2-zabbix-api-erigones"
-  - "python2-virtualenv"
+  #- "python3-molecule"
+  - "python3-boto"
+  - "python3-netaddr"
+  - "python3-zabbix-api-erigones"
+  - "python3-virtualenv"
   - "setroubleshoot-server"
   - "java-1.8.0-openjdk-devel"
   - "expect"
   - "postgresql"
   - "nmap"
+  - "docker-ce"
+  - "docker-ce-cli"
+  - "containerd.io"
+  - "docker-compose"
+
+workstation_rpm_packages_remove: []
 
 workstation_git_repositories: {}
 
 workstation_required_templates: []
 
-workstation_enabled_systemd_units: []
+workstation_enabled_systemd_units:
+  - "docker"
 
 workstation_include_tasks: []

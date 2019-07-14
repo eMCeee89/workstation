@@ -9,6 +9,14 @@
   hostname:
     name: "{{ workstation_hostname }}"
 
+- name: remove defined RPM packages
+  dnf:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ workstation_rpm_packages_remove }}"
+    - "{{ workstation_default_rpm_packages_remove }}"
+
 - name: create required directory structures
   file:
     path: "{{ item.path }}"
