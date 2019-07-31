@@ -1,10 +1,10 @@
 ---
-# vars file for niki
+# vars file for lajci
 
-workstation_hostname: "albireo"
-workstation_username: "niki"
+workstation_hostname: "alioth"
+workstation_username: "lajci"
 workstation_homedir: "/home/{{ workstation_username }}"
-workstation_group_primary: "niki"
+workstation_group_primary: "lajci"
 
 workstation_groups_additional_create: []
 
@@ -28,7 +28,6 @@ workstation_rpm_repos: []
 workstation_rpm_repo_packages: []
 
 workstation_rpm_packages:
-  - "slack"
   - "kodi"
   - "dnf-automatic"
 

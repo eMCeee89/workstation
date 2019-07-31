@@ -22,6 +22,7 @@ workstation_rpm_repo_packages: []
 
 workstation_rpm_packages:
   - "https://atom.io/download/rpm"
+  - "slack"
   - "vagrant"
   - "@Vagrant with libvirt support"
   #- "python3-molecule"
