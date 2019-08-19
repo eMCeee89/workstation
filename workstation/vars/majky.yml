@@ -6,6 +6,12 @@ workstation_username: "majky"
 workstation_homedir: "/home/{{ workstation_username }}"
 workstation_group_primary: "majky"
 
+workstation_api_interaction: []
+  # - url: "https://storage.googleapis.com/kubernetes-release/release/stable.txt"
+  #   method: "GET"
+  #   return_content: "yes"
+  #   register: "workstation_api_interaction_kubernetes_version_stable"
+
 workstation_groups_additional_create:
   - "docker"
 
@@ -40,6 +46,7 @@ workstation_rpm_packages:
   - "docker-ce-cli"
   - "containerd.io"
   - "docker-compose"
+  - "kubernetes-client"
 
 workstation_rpm_packages_remove: []
 
@@ -51,3 +58,20 @@ workstation_enabled_systemd_units:
   - "docker"
 
 workstation_include_tasks: []
+
+workstation_dconf: []
+
+workstation_download_files:
+  - url: "https://raw.githubusercontent.com/ahmetb/kubectx/master/kubectx"
+    dest: "{{ workstation_homedir }}/.local/bin/kubectx"
+    mode: 755
+    owner: "{{ workstation_username }}"
+    group: "{{ workstation_group_primary }}"
+
+  - url: "https://raw.githubusercontent.com/ahmetb/kubectx/master/kubens"
+    dest: "{{ workstation_homedir }}/.local/bin/kubens"
+    mode: 755
+    owner: "{{ workstation_username }}"
+    group: "{{ workstation_group_primary }}"
+
+workstation_run_command: []

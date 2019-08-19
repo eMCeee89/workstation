@@ -1,6 +1,10 @@
 ---
 # defaults file for workstation
 
+workstation_default_user_shell: "/usr/bin/zsh"
+
+workstation_default_api_interaction: []
+
 workstation_default_groups_additional_create: []
 
 workstation_default_groups_additional:
@@ -11,6 +15,11 @@ workstation_sysctl_parameters:
     value: 1
 
 workstation_default_required_dirs:
+  - path: "{{ workstation_homedir }}/.local/bin"
+    owner: "{{ workstation_username }}"
+    group: "{{ workstation_group_primary }}"
+    mode: 755
+
   - path: "{{ workstation_homedir }}/git"
     owner: "{{ workstation_username }}"
     group: "{{ workstation_group_primary }}"
@@ -58,11 +67,12 @@ workstation_default_rpm_packages:
   - "gnome-shell-extension-gpaste"
   - "gnome-shell-extension-topicons-plus"
   - "google-chrome-stable"
-  - "teamviewer"
+  - "python3-psutil"
   - "vlc"
   - "exfat-utils"
   - "fuse-exfat"
   - "libselinux-python"
+  - "zsh"
 
 workstation_default_rpm_packages_remove:
   - "docker"
@@ -86,4 +96,50 @@ workstation_default_required_templates:
     group: "{{ workstation_group_primary }}"
     mode: 640
 
+  - src: "zshrc.j2"
+    dest: "{{ workstation_homedir }}/.zshrc"
+    backup: no
+    owner: "{{ workstation_username }}"
+    group: "{{ workstation_group_primary }}"
+    mode: 644
+
 workstation_default_enabled_systemd_units: []
+
+workstation_default_dconf:
+  - key: "/org/gnome/desktop/interface/gtk-theme"
+    state: "present"
+    value: "'Adwaita-dark'"
+
+  - key: "/org/gnome/desktop/interface/show-battery-percentage"
+    state: "present"
+    value: "true"
+
+  - key: "/org/gnome/desktop/peripherals/touchpad/natural-scroll"
+    state: "present"
+    value: "false"
+
+  - key: "/org/gnome/desktop/peripherals/touchpad/two-finger-scrolling-enabled"
+    state: "present"
+    value: "true"
+
+  - key: "/org/gnome/shell/enabled-extensions"
+    state: "present"
+    value:
+      - "background-logo@fedorahosted.org"
+      - "GPaste@gnome-shell-extensions.gnome.org"
+      - "TopIcons@phocean.net"
+      - "window-list@gnome-shell-extensions.gcampax.github.com"
+
+  - key: "/org/gnome/shell/extensions/window-list/show-on-all-monitors"
+    state: "present"
+    value: "true"
+
+workstation_default_download_files:
+  - url: "https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh"
+    dest: "{{ workstation_homedir }}/oh-my-zsh-install.sh"
+    mode: 750
+    owner: "{{ workstation_username }}"
+    group: "{{ workstation_group_primary }}"
+
+workstation_default_run_command:
+  - "{{ workstation_homedir }}/oh-my-zsh-install.sh"
