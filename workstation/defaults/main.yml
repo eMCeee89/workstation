@@ -143,3 +143,6 @@ workstation_default_download_files:
 
 workstation_default_run_command:
   - "{{ workstation_homedir }}/oh-my-zsh-install.sh"
+
+workstation_default_cleanup_files:
+  - "{{ workstation_homedir }}/oh-my-zsh-install.sh"

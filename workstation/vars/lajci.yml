@@ -64,3 +64,5 @@ workstation_dconf: []
 workstation_download_files: []
 
 workstation_run_command: []
+
+workstation_cleanup_files: []

@@ -182,3 +182,11 @@
 - name: include task files
   include_tasks: "{{ item }}"
   with_items: "{{ workstation_include_tasks }}"
+
+- name: cleanup obsolete files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ workstation_cleanup_files }}"
+    - "{{ workstation_default_cleanup_files }}"

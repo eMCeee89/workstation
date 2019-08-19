@@ -75,3 +75,5 @@ workstation_download_files:
     group: "{{ workstation_group_primary }}"
 
 workstation_run_command: []
+
+workstation_cleanup_files: []
