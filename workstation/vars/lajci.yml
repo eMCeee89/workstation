@@ -6,6 +6,8 @@ workstation_username: "lajci"
 workstation_homedir: "/home/{{ workstation_username }}"
 workstation_group_primary: "lajci"
 
+workstation_api_interaction: []
+
 workstation_groups_additional_create: []
 
 workstation_groups_additional: []
@@ -56,3 +58,9 @@ workstation_kodi_tars:
   - src: "kodi_config.tar.gz"
     dest: "{{ workstation_homedir }}/.kodi"
     keep_newer: yes
+
+workstation_dconf: []
+
+workstation_download_files: []
+
+workstation_run_command: []

@@ -5,6 +5,19 @@
   include_vars:
     file: "{{ workstation_fella }}.yml"
 
+- name: interact with API
+  uri:
+    url: "{{ item.url }}"
+    method: "{{ item.method }}"
+    body: "{{ item.body | default(omit) }}"
+    body_format: "{{ item.body_format | default(omit) }}"
+    return_content: "{{ item.return_content }}"
+  register: "{{ item.register | default(omit) }}"
+  with_items:
+    - "{{ workstation_api_interaction }}"
+    - "{{ workstation_default_api_interaction }}"
+
+
 - name: set hostname
   hostname:
     name: "{{ workstation_hostname }}"
@@ -28,6 +41,17 @@
     - "{{ workstation_required_dirs }}"
     - "{{ workstation_default_required_dirs }}"
 
+- name: download required files
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+  with_items:
+    - "{{ workstation_download_files }}"
+    - "{{ workstation_default_download_files }}"
+
 - name: deploy required files
   copy:
     src: "{{ item.src }}"
@@ -43,10 +67,10 @@
   yum_repository:
     name: "{{ item.name }}"
     description: "{{ item.description }}"
-    baseurl: "{{ item.baseurl|default(omit) }}"
-    mirrorlist: "{{ item.mirrorlist|default(omit) }}"
+    baseurl: "{{ item.baseurl | default(omit) }}"
+    mirrorlist: "{{ item.mirrorlist | default(omit) }}"
     gpgcheck: "{{ item.gpgcheck }}"
-    gpgkey: "{{ item.gpgkey|default(omit) }}"
+    gpgkey: "{{ item.gpgkey | default(omit) }}"
     enabled: "{{ item.enabled }}"
     state: present
   with_items:
@@ -78,6 +102,13 @@
     - "{{ workstation_rpm_packages }}"
     - "{{ workstation_default_rpm_packages }}"
 
+- name: run commands
+  command: "{{ item }}"
+  with_items:
+    - "{{ workstation_run_command }}"
+    - "{{ workstation_default_run_command }}"
+  become_user: "{{ workstation_username }}"
+
 - name: clone repositories
   git:
     repo: "{{ item.value.repo }}"
@@ -93,9 +124,9 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     backup: "{{ item.backup }}"
-    owner: "{{ item.owner |default(omit) }}"
-    group: "{{ item.group |default(omit) }}"
-    mode: "{{ item.mode |default(omit) }}"
+    owner: "{{ item.owner | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+    mode: "{{ item.mode | default(omit) }}"
   with_items:
     - "{{ workstation_required_templates }}"
     - "{{ workstation_default_required_templates }}"
@@ -117,6 +148,11 @@
     - "{{ workstation_default_groups_additional }}"
     - "{{ workstation_groups_additional }}"
 
+- name: adjust user's shell
+  user:
+    name: "{{ workstation_username }}"
+    shell: "{{ workstation_user_shell | default(workstation_default_user_shell) }}"
+
 - name: enable required systemd units
   systemd:
     name: "{{ item }}"
@@ -132,6 +168,16 @@
     state: present
   with_items:
     - "{{ workstation_sysctl_parameters }}"
+
+- name: configure dconf settings
+  dconf:
+    key: "{{ item.key }}"
+    state: "{{ item.state }}"
+    value: "{{ item.value }}"
+  with_items:
+    - "{{ workstation_dconf }}"
+    - "{{ workstation_default_dconf }}"
+  become_user: "{{ workstation_username }}"
 
 - name: include task files
   include_tasks: "{{ item }}"
