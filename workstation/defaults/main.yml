@@ -67,6 +67,7 @@ workstation_default_rpm_packages:
   - "gnome-shell-extension-gpaste"
   - "gnome-shell-extension-topicons-plus"
   - "google-chrome-stable"
+  - "gimp"
   - "python3-psutil"
   - "vlc"
   - "exfat-utils"
