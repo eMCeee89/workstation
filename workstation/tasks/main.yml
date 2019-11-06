@@ -17,7 +17,6 @@
     - "{{ workstation_api_interaction }}"
     - "{{ workstation_default_api_interaction }}"
 
-
 - name: set hostname
   hostname:
     name: "{{ workstation_hostname }}"

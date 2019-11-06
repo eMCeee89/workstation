@@ -65,7 +65,7 @@ workstation_default_rpm_packages:
   - "transmission"
   - "@virtualization"
   - "gnome-shell-extension-gpaste"
-  - "gnome-shell-extension-topicons-plus"
+  - "gnome-shell-extension-appindicator"
   - "google-chrome-stable"
   - "gimp"
   - "python3-psutil"
@@ -126,9 +126,9 @@ workstation_default_dconf:
   - key: "/org/gnome/shell/enabled-extensions"
     state: "present"
     value:
+      - "appindicatorsupport@rgcjonas.gmail.com"
       - "background-logo@fedorahosted.org"
       - "GPaste@gnome-shell-extensions.gnome.org"
-      - "TopIcons@phocean.net"
       - "window-list@gnome-shell-extensions.gcampax.github.com"
 
   - key: "/org/gnome/shell/extensions/window-list/show-on-all-monitors"

@@ -22,7 +22,13 @@ workstation_required_dirs: []
 
 workstation_required_files: []
 
-workstation_rpm_repos: []
+workstation_rpm_repos:
+  - name: "vs-code"
+    description: "Microsoft Visual Studio Code repository"
+    baseurl: "https://packages.microsoft.com/yumrepos/vscode"
+    gpgcheck: yes
+    gpgkey: "https://packages.microsoft.com/keys/microsoft.asc"
+    enabled: yes
 
 workstation_rpm_repo_packages: []
 
@@ -47,6 +53,7 @@ workstation_rpm_packages:
   - "containerd.io"
   - "docker-compose"
   - "kubernetes-client"
+  - "code"
 
 workstation_rpm_packages_remove: []
 
