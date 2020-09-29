@@ -1,10 +1,10 @@
 ---
-# vars file for niki
+# vars file for niky
 
 workstation_hostname: "albireo"
-workstation_username: "niki"
+workstation_username: "niky"
 workstation_homedir: "/home/{{ workstation_username }}"
-workstation_group_primary: "niki"
+workstation_group_primary: "niky"
 
 workstation_api_interaction: []
 
@@ -65,5 +65,7 @@ workstation_dconf: []
 workstation_download_files: []
 
 workstation_run_command: []
+
+workstation_run_command_root: []
 
 workstation_cleanup_files: []

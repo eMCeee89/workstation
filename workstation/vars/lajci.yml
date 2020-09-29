@@ -65,4 +65,6 @@ workstation_download_files: []
 
 workstation_run_command: []
 
+workstation_run_command_root: []
+
 workstation_cleanup_files: []

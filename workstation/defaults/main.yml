@@ -1,8 +1,6 @@
 ---
 # defaults file for workstation
 
-workstation_default_user_shell: "/usr/bin/zsh"
-
 workstation_default_api_interaction: []
 
 workstation_default_groups_additional_create: []
@@ -46,19 +44,19 @@ workstation_default_rpm_repos:
     gpgcheck: no
     enabled: yes
 
-  - name: "docker-ce-stable"
-    description: "Docker CE stable repository"
-    #baseurl: "https://download.docker.com/linux/fedora/$releasever/$basearch/stable"
-    baseurl: "https://download.docker.com/linux/fedora/29/$basearch/stable"
-    gpgcheck: yes
-    gpgkey: "https://download.docker.com/linux/fedora/gpg"
+  - name: "atom"
+    description: "atom.io repository"
+    baseurl: "https://packagecloud.io/AtomEditor/atom/el/7/x86_64"
+    gpgcheck: no
+    repo_gpgcheck: yes
+    gpgkey: "https://packagecloud.io/AtomEditor/atom/gpgkey"
     enabled: yes
 
 workstation_default_rpm_repo_packages:
-  - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-30.noarch.rpm"
+  - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-32.noarch.rpm"
+  - "https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm"
 
 workstation_default_rpm_packages:
-  - "https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm"
   - "gnome-tweaks"
   - "remmina"
   - "terminator"
@@ -72,20 +70,9 @@ workstation_default_rpm_packages:
   - "vlc"
   - "exfat-utils"
   - "fuse-exfat"
-  - "libselinux-python"
-  - "zsh"
+  - "atom"
 
-workstation_default_rpm_packages_remove:
-  - "docker"
-  - "docker-client"
-  - "docker-client-latest"
-  - "docker-common"
-  - "docker-latest"
-  - "docker-latest-logrotate"
-  - "docker-logrotate"
-  - "docker-selinux"
-  - "docker-engine-selinux"
-  - "docker-engine"
+workstation_default_rpm_packages_remove: []
 
 workstation_default_git_repositories: {}
 
@@ -97,8 +84,8 @@ workstation_default_required_templates:
     group: "{{ workstation_group_primary }}"
     mode: 640
 
-  - src: "zshrc.j2"
-    dest: "{{ workstation_homedir }}/.zshrc"
+  - src: "bashrc.j2"
+    dest: "{{ workstation_homedir }}/.bashrc"
     backup: no
     owner: "{{ workstation_username }}"
     group: "{{ workstation_group_primary }}"
@@ -135,15 +122,13 @@ workstation_default_dconf:
     state: "present"
     value: "true"
 
-workstation_default_download_files:
-  - url: "https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh"
-    dest: "{{ workstation_homedir }}/oh-my-zsh-install.sh"
-    mode: 750
-    owner: "{{ workstation_username }}"
-    group: "{{ workstation_group_primary }}"
+workstation_default_download_files: []
 
-workstation_default_run_command:
-  - "{{ workstation_homedir }}/oh-my-zsh-install.sh"
+workstation_default_run_command: []
 
-workstation_default_cleanup_files:
-  - "{{ workstation_homedir }}/oh-my-zsh-install.sh"
+workstation_default_run_command_root:
+  - grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
+
+workstation_default_cleanup_files: []
+
+workstation_docker_enabled: False

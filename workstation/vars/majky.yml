@@ -33,12 +33,12 @@ workstation_rpm_repos:
 workstation_rpm_repo_packages: []
 
 workstation_rpm_packages:
-  - "https://atom.io/download/rpm"
-  - "https://dbeaver.io/files/dbeaver-ce-latest-stable.x86_64.rpm"
+  - "evolution"
+  - "evolution-ews"
   - "slack"
   - "vagrant"
   - "@Vagrant with libvirt support"
-  #- "python3-molecule"
+  - "python3-molecule"
   - "python3-boto"
   - "python3-netaddr"
   - "python3-zabbix-api-erigones"
@@ -48,9 +48,7 @@ workstation_rpm_packages:
   - "expect"
   - "postgresql"
   - "nmap"
-  - "docker-ce"
-  - "docker-ce-cli"
-  - "containerd.io"
+  - "moby-engine"
   - "docker-compose"
   - "kubernetes-client"
   - "code"
@@ -83,4 +81,8 @@ workstation_download_files:
 
 workstation_run_command: []
 
+workstation_run_command_root: []
+
 workstation_cleanup_files: []
+
+workstation_docker_enabled: True

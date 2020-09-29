@@ -1,8 +1,4 @@
-Provisioning role for Fedora 30
+Provisioning role for Fedora 32
 
-Install first:
-  - ansible
-  - python3-dnf
-
-Run locally as follows:
-  ansible-playbook playbook.yml -e "workstation_fella=niki" --ask-become-pass
+Install ansible first, then run locally as follows:
+  ansible-playbook playbook.yml -e "workstation_fella=majky" --ask-become-pass

@@ -13,9 +13,7 @@
     body_format: "{{ item.body_format | default(omit) }}"
     return_content: "{{ item.return_content }}"
   register: "{{ item.register | default(omit) }}"
-  with_items:
-    - "{{ workstation_api_interaction }}"
-    - "{{ workstation_default_api_interaction }}"
+  loop: "{{ (workstation_api_interaction + workstation_default_api_interaction) | flatten(levels=1) }}"
 
 - name: set hostname
   hostname:
@@ -25,9 +23,7 @@
   dnf:
     name: "{{ item }}"
     state: absent
-  with_items:
-    - "{{ workstation_rpm_packages_remove }}"
-    - "{{ workstation_default_rpm_packages_remove }}"
+  loop: "{{ (workstation_rpm_packages_remove + workstation_default_rpm_packages_remove) | flatten(levels=1) }}"
 
 - name: create required directory structures
   file:
@@ -36,9 +32,7 @@
     group: "{{ item.group }}"
     mode: "{{ item.mode }}"
     state: directory
-  with_items:
-    - "{{ workstation_required_dirs }}"
-    - "{{ workstation_default_required_dirs }}"
+  loop: "{{ (workstation_required_dirs + workstation_default_required_dirs) | flatten(levels=1) }}"
 
 - name: download required files
   get_url:
@@ -47,9 +41,7 @@
     mode: "{{ item.mode }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
-  with_items:
-    - "{{ workstation_download_files }}"
-    - "{{ workstation_default_download_files }}"
+  loop: "{{ (workstation_download_files + workstation_default_download_files) | flatten(levels=1) }}"
 
 - name: deploy required files
   copy:
@@ -58,9 +50,7 @@
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
     mode: "{{ item.mode }}"
-  with_items:
-    - "{{ workstation_required_files }}"
-    - "{{ workstation_default_required_files }}"
+  loop: "{{ (workstation_required_files + workstation_default_required_files) | flatten(levels=1) }}"
 
 - name: add required RPM repositories
   yum_repository:
@@ -71,41 +61,38 @@
     gpgcheck: "{{ item.gpgcheck }}"
     gpgkey: "{{ item.gpgkey | default(omit) }}"
     enabled: "{{ item.enabled }}"
+    repo_gpgcheck: "{{ item.repo_gpgcheck | default(omit) }}"
     state: present
-  with_items:
-    - "{{ workstation_rpm_repos }}"
-    - "{{ workstation_default_rpm_repos }}"
+  loop: "{{ (workstation_rpm_repos + workstation_default_rpm_repos) | flatten(levels=1) }}"
 
 - name: add RPM repositories from RPM package
   dnf:
-    name: "{{ item }}"
+    name: "{{ workstation_rpm_repo_packages + workstation_default_rpm_repo_packages }}"
     state: installed
-  with_items:
-    - "{{ workstation_rpm_repo_packages }}"
-    - "{{ workstation_default_rpm_repo_packages }}"
+    disable_gpg_check: yes
 
 - name: add RPM gpg keys
   rpm_key:
     key: "{{ item.gpgkey|regex_replace('file://', '') }}"
     state: present
   when: item.gpgkey is defined
-  with_items:
-    - "{{ workstation_rpm_repos }}"
-    - "{{ workstation_default_rpm_repos }}"
+  loop: "{{ (workstation_rpm_repos + workstation_default_rpm_repos) | flatten(levels=1) }}"
 
 - name: install required RPM packages
   dnf:
-    name: "{{ item }}"
+    name: "{{ workstation_rpm_packages + workstation_default_rpm_packages }}"
     state: installed
-  with_items:
-    - "{{ workstation_rpm_packages }}"
-    - "{{ workstation_default_rpm_packages }}"
+
+- name: run commands as root
+  command: "{{ item }}"
+  loop: "{{ (workstation_run_command_root + workstation_default_run_command_root) | flatten(levels=1) }}"
+  become_user: "root"
+  become: yes
+  changed_when: no
 
 - name: run commands
   command: "{{ item }}"
-  with_items:
-    - "{{ workstation_run_command }}"
-    - "{{ workstation_default_run_command }}"
+  loop: "{{ (workstation_run_command + workstation_default_run_command) | flatten(levels=1) }}"
   become_user: "{{ workstation_username }}"
 
 - name: clone repositories
@@ -113,9 +100,7 @@
     repo: "{{ item.value.repo }}"
     dest: "{{ item.value.dest }}"
     clone: yes
-  with_dict:
-    - "{{ workstation_git_repositories }}"
-    - "{{ workstation_default_git_repositories }}"
+  loop: "{{ (workstation_git_repositories | combine(workstation_default_git_repositories)) | dict2items }}"
   become_user: "{{ workstation_username }}"
 
 - name: deploy defined templates
@@ -126,66 +111,60 @@
     owner: "{{ item.owner | default(omit) }}"
     group: "{{ item.group | default(omit) }}"
     mode: "{{ item.mode | default(omit) }}"
-  with_items:
-    - "{{ workstation_required_templates }}"
-    - "{{ workstation_default_required_templates }}"
+  loop: "{{ (workstation_required_templates + workstation_default_required_templates) | flatten(levels=1) }}"
 
 - name: create additional groups
   user:
     name: "{{ item }}"
     state: present
-  with_items:
-    - "{{ workstation_default_groups_additional_create }}"
-    - "{{ workstation_groups_additional_create }}"
+  loop: "{{ (workstation_default_groups_additional_create + workstation_groups_additional_create) | flatten(levels=1) }}"
 
 - name: append user to additional groups
   user:
     name: "{{ workstation_username }}"
     groups: "{{ item }}"
     append: yes
-  with_items:
-    - "{{ workstation_default_groups_additional }}"
-    - "{{ workstation_groups_additional }}"
+  loop: "{{ (workstation_default_groups_additional + workstation_groups_additional) | flatten(levels=1) }}"
 
-- name: adjust user's shell
-  user:
-    name: "{{ workstation_username }}"
-    shell: "{{ workstation_user_shell | default(workstation_default_user_shell) }}"
+# expects that docker is already installed
+- name: add docker0 interface to trusted zone in firewalld
+  firewalld:
+    interface: "docker0"
+    zone: trusted
+    state: enabled
+    permanent: True
+    immediate: True
+  when: workstation_docker_enabled
 
 - name: enable required systemd units
   systemd:
     name: "{{ item }}"
     enabled: yes
-  with_items:
-    - "{{ workstation_enabled_systemd_units }}"
-    - "{{ workstation_default_enabled_systemd_units }}"
+  loop: "{{ (workstation_enabled_systemd_units + workstation_default_enabled_systemd_units) | flatten(levels=1) }}"
 
 - name: configure kernel parameters using sysctl
   sysctl:
     name: "{{ item.name }}"
     value: "{{ item.value }}"
     state: present
-  with_items:
-    - "{{ workstation_sysctl_parameters }}"
+  loop: "{{ workstation_sysctl_parameters | flatten(levels=1) }}"
 
 - name: configure dconf settings
   dconf:
     key: "{{ item.key }}"
     state: "{{ item.state }}"
     value: "{{ item.value }}"
-  with_items:
-    - "{{ workstation_dconf }}"
-    - "{{ workstation_default_dconf }}"
+  loop: "{{ (workstation_dconf + workstation_default_dconf) | flatten(levels=1) }}"
   become_user: "{{ workstation_username }}"
 
 - name: include task files
-  include_tasks: "{{ item }}"
-  with_items: "{{ workstation_include_tasks }}"
+  include_tasks: "{{ _workstation_include_task_item }}"
+  loop: "{{ workstation_include_tasks | flatten(levels=1) }}"
+  loop_control:
+    loop_var: _workstation_include_task_item
 
 - name: cleanup obsolete files
   file:
     path: "{{ item }}"
     state: absent
-  with_items:
-    - "{{ workstation_cleanup_files }}"
-    - "{{ workstation_default_cleanup_files }}"
+  loop: "{{ (workstation_cleanup_files + workstation_default_cleanup_files) | flatten(levels=1) }}"
