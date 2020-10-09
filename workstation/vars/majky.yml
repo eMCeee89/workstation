@@ -64,7 +64,15 @@ workstation_enabled_systemd_units:
 
 workstation_include_tasks: []
 
-workstation_dconf: []
+workstation_dconf:
+  - key: "/org/gnome/shell/favorite-apps"
+    state: "present"
+    value:
+      - "google-chrome.desktop"
+      - "terminator.desktop"
+      - "atom.desktop"
+      - "org.gnome.Nautilus.desktop"
+      - "skypeforlinux.desktop"
 
 workstation_download_files:
   - url: "https://raw.githubusercontent.com/ahmetb/kubectx/master/kubectx"
