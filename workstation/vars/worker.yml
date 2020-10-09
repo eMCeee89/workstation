@@ -1,10 +1,10 @@
 ---
-# vars file for majky
+# vars file for worker
 
 workstation_hostname: "altair"
-workstation_username: "majky"
+workstation_username: "worker"
 workstation_homedir: "/home/{{ workstation_username }}"
-workstation_group_primary: "majky"
+workstation_group_primary: "worker"
 
 workstation_api_interaction: []
   # - url: "https://storage.googleapis.com/kubernetes-release/release/stable.txt"
@@ -72,7 +72,8 @@ workstation_dconf:
       - "terminator.desktop"
       - "atom.desktop"
       - "org.gnome.Nautilus.desktop"
-      - "skypeforlinux.desktop"
+      - "slack.desktop"
+      - "cisco-anyconnect.desktop"
 
   - key: "/org/gnome/settings-daemon/plugins/color/night-light-enabled"
     state: "present"
