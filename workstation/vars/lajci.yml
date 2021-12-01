@@ -18,11 +18,6 @@ workstation_required_dirs:
     group: "{{ workstation_group_primary }}"
     mode: 755
 
-  - path: "{{ workstation_homedir }}/.kodi"
-    owner: "{{ workstation_username }}"
-    group: "{{ workstation_group_primary }}"
-    mode: 755
-
 workstation_required_files: []
 
 workstation_rpm_repos: []
@@ -30,7 +25,6 @@ workstation_rpm_repos: []
 workstation_rpm_repo_packages: []
 
 workstation_rpm_packages:
-  - "kodi"
   - "dnf-automatic"
 
 workstation_rpm_packages_remove: []
@@ -51,13 +45,7 @@ workstation_required_templates:
 workstation_enabled_systemd_units:
   - "dnf-automatic-install.timer"
 
-workstation_include_tasks:
-  - "kodi.yml"
-
-workstation_kodi_tars:
-  - src: "kodi_config.tar.gz"
-    dest: "{{ workstation_homedir }}/.kodi"
-    keep_newer: yes
+workstation_include_tasks: []
 
 workstation_dconf: []
 

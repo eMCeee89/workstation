@@ -80,18 +80,7 @@ workstation_dconf:
     value: "true"
 
 
-workstation_download_files:
-  - url: "https://raw.githubusercontent.com/ahmetb/kubectx/master/kubectx"
-    dest: "{{ workstation_homedir }}/.local/bin/kubectx"
-    mode: 755
-    owner: "{{ workstation_username }}"
-    group: "{{ workstation_group_primary }}"
-
-  - url: "https://raw.githubusercontent.com/ahmetb/kubectx/master/kubens"
-    dest: "{{ workstation_homedir }}/.local/bin/kubens"
-    mode: 755
-    owner: "{{ workstation_username }}"
-    group: "{{ workstation_group_primary }}"
+workstation_download_files: []
 
 workstation_run_command: []
 

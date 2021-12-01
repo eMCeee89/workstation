@@ -126,16 +126,6 @@
     append: yes
   loop: "{{ (workstation_default_groups_additional + workstation_groups_additional) | flatten(levels=1) }}"
 
-# expects that docker is already installed
-- name: add docker0 interface to trusted zone in firewalld
-  firewalld:
-    interface: "docker0"
-    zone: trusted
-    state: enabled
-    permanent: True
-    immediate: True
-  when: workstation_docker_enabled
-
 - name: enable required systemd units
   systemd:
     name: "{{ item }}"

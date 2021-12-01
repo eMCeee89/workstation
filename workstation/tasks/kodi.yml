@@ -1,8 +1,0 @@
----
-
-- name: unarchive tars for Kodi
-  unarchive:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    keep_newer: "{{ item.keep_newer }}"
-  loop: "{{ workstation_kodi_tars | flatten(levels=1) }}"
