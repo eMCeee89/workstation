@@ -72,8 +72,10 @@ workstation_default_rpm_packages:
   - "exfat-utils"
   - "fuse-exfat"
   - "atom"
+  - "vim-default-editor"
 
-workstation_default_rpm_packages_remove: []
+workstation_default_rpm_packages_remove:
+  - "nano-default-editor"
 
 workstation_default_git_repositories: {}
 
