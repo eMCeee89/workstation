@@ -33,15 +33,12 @@ workstation_rpm_repos:
 workstation_rpm_repo_packages: []
 
 workstation_rpm_packages:
-  - "evolution"
-  - "evolution-ews"
   - "slack"
   - "vagrant"
   - "@Vagrant with libvirt support"
   - "python3-molecule"
   - "python3-boto"
   - "python3-netaddr"
-  - "python3-zabbix-api-erigones"
   - "python3-virtualenv"
   - "setroubleshoot-server"
   - "java-1.8.0-openjdk-devel"
@@ -72,6 +69,7 @@ workstation_dconf:
       - "terminator.desktop"
       - "atom.desktop"
       - "org.gnome.Nautilus.desktop"
+      - "slack.desktop"
 
   - key: "/org/gnome/settings-daemon/plugins/color/night-light-enabled"
     state: "present"

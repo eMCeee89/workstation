@@ -1,4 +1,7 @@
-Provisioning role for Fedora 35
+# Provisioning role for Fedora Workstation
 
-Install ansible first, then run locally as follows:
-  ansible-playbook playbook.yml -e "workstation_fella=majky" --ask-become-pass
+* first, install Ansible and required collections:
+`sudo dnf install -y ansible-core && ansible-galaxy collection install -r ansible_collection_requirements.yml`
+
+* then, run Ansible provisioning as follows:
+`ansible-playbook playbook.yml -e "workstation_fella=majky" --ask-become-pass`
