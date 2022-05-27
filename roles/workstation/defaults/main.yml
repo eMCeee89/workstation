@@ -109,6 +109,10 @@ workstation_default_required_templates:
 workstation_default_enabled_systemd_units: []
 
 workstation_default_dconf:
+  - key: "/org/gnome/desktop/interface/color-scheme"
+    state: "present"
+    value: "'prefer-dark'"
+
   - key: "/org/gnome/desktop/interface/gtk-theme"
     state: "present"
     value: "'Adwaita-dark'"
