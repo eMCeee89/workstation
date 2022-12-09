@@ -49,16 +49,8 @@ workstation_default_rpm_repos:
     gpgcheck: no
     enabled: yes
 
-  - name: "atom"
-    description: "atom.io repository"
-    baseurl: "https://packagecloud.io/AtomEditor/atom/el/7/x86_64"
-    gpgcheck: no
-    repo_gpgcheck: yes
-    gpgkey: "https://packagecloud.io/AtomEditor/atom/gpgkey"
-    enabled: yes
-
 workstation_default_rpm_repo_packages:
-  - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-36.noarch.rpm"
+  - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-37.noarch.rpm"
   - "https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm"
 
 workstation_default_rpm_packages:
@@ -76,7 +68,6 @@ workstation_default_rpm_packages:
   - "vlc"
   - "exfat-utils"
   - "fuse-exfat"
-  - "atom"
   - "vim-default-editor"
 
 workstation_default_rpm_packages_remove:

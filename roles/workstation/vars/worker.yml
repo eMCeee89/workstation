@@ -67,14 +67,13 @@ workstation_dconf:
     value:
       - "google-chrome.desktop"
       - "terminator.desktop"
-      - "atom.desktop"
+      - "code.desktop"
       - "org.gnome.Nautilus.desktop"
       - "slack.desktop"
 
   - key: "/org/gnome/settings-daemon/plugins/color/night-light-enabled"
     state: "present"
     value: "true"
-
 
 workstation_download_files: []
 
