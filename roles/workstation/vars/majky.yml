@@ -33,22 +33,20 @@ workstation_rpm_repos:
 workstation_rpm_repo_packages: []
 
 workstation_rpm_packages:
-  - "slack"
-  - "vagrant"
   - "@Vagrant with libvirt support"
-  - "python3-molecule"
+  - "docker-compose"
+  - "kubernetes-client"
+  - "moby-engine"
+  - "nmap"
+  - "postgresql"
   - "python3-boto"
+  - "python3-molecule"
   - "python3-netaddr"
   - "python3-virtualenv"
   - "setroubleshoot-server"
-  - "java-1.8.0-openjdk-devel"
-  - "expect"
-  - "postgresql"
-  - "nmap"
-  - "moby-engine"
-  - "docker-compose"
-  - "kubernetes-client"
-  - "code"
+  - "slack"
+  - "telnet"
+  - "vagrant"
 
 workstation_rpm_packages_remove: []
 

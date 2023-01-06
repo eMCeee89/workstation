@@ -13,6 +13,11 @@ workstation_sysctl_parameters:
     value: 1
 
 workstation_default_required_dirs:
+  - path: "{{ workstation_homedir }}/.config/Code/User"
+    owner: "{{ workstation_username }}"
+    group: "{{ workstation_group_primary }}"
+    mode: 755
+
   - path: "{{ workstation_homedir }}/.config/terminator"
     owner: "{{ workstation_username }}"
     group: "{{ workstation_group_primary }}"
@@ -33,7 +38,12 @@ workstation_default_required_dirs:
     group: "{{ workstation_group_primary }}"
     mode: 755
 
-workstation_default_required_files: []
+workstation_default_required_files:
+  - src: "code-settings.json"
+    dest: "{{ workstation_homedir }}/.config/Code/User/settings.json"
+    owner: "{{ workstation_username }}"
+    group: "{{ workstation_group_primary }}"
+    mode: 644
 
 workstation_default_rpm_repos:
   - name: "google-chrome"
@@ -54,21 +64,22 @@ workstation_default_rpm_repo_packages:
   - "https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm"
 
 workstation_default_rpm_packages:
-  - "gnome-tweaks"
-  - "remmina"
-  - "terminator"
-  - "transmission"
   - "@virtualization"
+  - "code"
+  - "exfat-utils"
+  - "fuse-exfat"
+  - "gimp"
+  - "google-chrome-stable"
   - "gnome-extensions-app"
   - "gnome-shell-extension-gpaste"
   - "gnome-shell-extension-appindicator"
-  - "google-chrome-stable"
-  - "gimp"
+  - "gnome-tweaks"
   - "python3-psutil"
-  - "vlc"
-  - "exfat-utils"
-  - "fuse-exfat"
+  - "remmina"
+  - "terminator"
+  - "transmission"
   - "vim-default-editor"
+  - "vlc"
 
 workstation_default_rpm_packages_remove:
   - "nano-default-editor"
@@ -134,7 +145,11 @@ workstation_default_dconf:
 
 workstation_default_download_files: []
 
-workstation_default_run_command: []
+workstation_default_run_command:
+  - code --install-extension hashicorp.terraform
+  - code --install-extension ms-azuretools.vscode-docker
+  - code --install-extension ms-vscode-remote.remote-containers
+  - code --install-extension streetsidesoftware.code-spell-checker
 
 workstation_default_run_command_root: []
   #- grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=0"
