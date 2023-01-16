@@ -45,6 +45,12 @@ workstation_default_required_files:
     group: "{{ workstation_group_primary }}"
     mode: 644
 
+  - src: "bluetooth-main.conf"
+    dest: "/etc/bluetooth/main.conf"
+    owner: "root"
+    group: "root"
+    mode: 644
+
 workstation_default_rpm_repos:
   - name: "google-chrome"
     description: "Google Chrome official stable repository"
@@ -66,6 +72,7 @@ workstation_default_rpm_repo_packages:
 workstation_default_rpm_packages:
   - "@virtualization"
   - "code"
+  - "bluez*"
   - "exfat-utils"
   - "fuse-exfat"
   - "gimp"
