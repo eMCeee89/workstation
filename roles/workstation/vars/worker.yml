@@ -6,11 +6,11 @@ workstation_username: "worker"
 workstation_homedir: "/home/{{ workstation_username }}"
 workstation_group_primary: "worker"
 
-workstation_api_interaction: []
-  # - url: "https://storage.googleapis.com/kubernetes-release/release/stable.txt"
-  #   method: "GET"
-  #   return_content: "yes"
-  #   register: "workstation_api_interaction_kubernetes_version_stable"
+workstation_api_interaction:
+  - url: "https://storage.googleapis.com/kubernetes-release/release/stable.txt"
+    method: "GET"
+    return_content: "yes"
+    register: "workstation_api_interaction_kubernetes_version_stable"
 
 workstation_groups_additional_create:
   - "docker"

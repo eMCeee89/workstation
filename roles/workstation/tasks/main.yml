@@ -12,7 +12,7 @@
     body: "{{ item.body | default(omit) }}"
     body_format: "{{ item.body_format | default(omit) }}"
     return_content: "{{ item.return_content }}"
-  register: "{{ item.register | default(omit) }}"
+  register: "_api_interaction_register"
   loop: "{{ (workstation_api_interaction + workstation_default_api_interaction) | flatten(levels=1) }}"
 
 - name: set hostname
