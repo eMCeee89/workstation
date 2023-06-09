@@ -52,6 +52,8 @@ workstation_rpm_packages_remove: []
 
 workstation_git_repositories: {}
 
+workstation_required_system_templates: []
+
 workstation_required_templates: []
 
 workstation_enabled_systemd_units:

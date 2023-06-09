@@ -103,6 +103,18 @@
   loop: "{{ (workstation_git_repositories | combine(workstation_default_git_repositories)) | dict2items }}"
   become_user: "{{ workstation_username }}"
 
+- name: deploy defined system templates
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    backup: "{{ item.backup }}"
+    owner: "{{ item.owner | default(omit) }}"
+    group: "{{ item.group | default(omit) }}"
+    mode: "{{ item.mode | default(omit) }}"
+  become_user: "root"
+  become: yes
+  loop: "{{ (workstation_required_system_templates + workstation_default_required_system_templates) | flatten(levels=1) }}"
+
 - name: deploy defined templates
   template:
     src: "{{ item.src }}"
