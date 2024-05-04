@@ -40,7 +40,6 @@ workstation_rpm_packages:
   - "nmap"
   - "postgresql"
   - "python3-boto"
-  - "python3-molecule"
   - "python3-netaddr"
   - "python3-virtualenv"
   - "setroubleshoot-server"
