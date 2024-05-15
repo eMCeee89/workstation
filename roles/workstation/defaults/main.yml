@@ -71,6 +71,7 @@ workstation_default_rpm_repo_packages:
 
 workstation_default_rpm_packages:
   - "@virtualization"
+  - "awscli2"
   - "code"
   - "bluez*"
   - "exfat-utils"
@@ -87,6 +88,7 @@ workstation_default_rpm_packages:
   - "transmission"
   - "vim-default-editor"
   - "vlc"
+  - "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/linux_64bit/session-manager-plugin.rpm"
 
 workstation_default_rpm_packages_remove:
   - "nano-default-editor"

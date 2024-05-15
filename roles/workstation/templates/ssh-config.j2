@@ -1,3 +1,7 @@
 Host *
     ServerAliveInterval 60
     AddressFamily inet
+
+# SSH over Session Manager
+Host i-* mi-*
+    ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --region eu-west-2 --parameters 'portNumber=%p'"
