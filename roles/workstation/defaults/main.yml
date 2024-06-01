@@ -134,7 +134,7 @@ workstation_default_dconf:
 
   - key: "/org/gnome/desktop/interface/gtk-theme"
     state: "present"
-    value: "'Adwaita-dark'"
+    value: "'Adwaita'"
 
   - key: "/org/gnome/desktop/interface/show-battery-percentage"
     state: "present"
