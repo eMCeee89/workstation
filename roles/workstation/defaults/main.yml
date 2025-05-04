@@ -1,6 +1,4 @@
 ---
-# defaults file for workstation
-
 workstation_default_api_interaction: []
 
 workstation_default_groups_additional_create: []
@@ -16,40 +14,40 @@ workstation_default_required_dirs:
   - path: "{{ workstation_homedir }}/.config/Code/User"
     owner: "{{ workstation_username }}"
     group: "{{ workstation_group_primary }}"
-    mode: 755
+    mode: "0755"
 
   - path: "{{ workstation_homedir }}/.config/terminator"
     owner: "{{ workstation_username }}"
     group: "{{ workstation_group_primary }}"
-    mode: 755
+    mode: "0755"
 
   - path: "{{ workstation_homedir }}/.local/bin"
     owner: "{{ workstation_username }}"
     group: "{{ workstation_group_primary }}"
-    mode: 755
+    mode: "0755"
 
   - path: "{{ workstation_homedir }}/.ssh"
     owner: "{{ workstation_username }}"
     group: "{{ workstation_group_primary }}"
-    mode: 700
+    mode: "0700"
 
   - path: "{{ workstation_homedir }}/git"
     owner: "{{ workstation_username }}"
     group: "{{ workstation_group_primary }}"
-    mode: 755
+    mode: "0755"
 
 workstation_default_required_files:
   - src: "code-settings.json"
     dest: "{{ workstation_homedir }}/.config/Code/User/settings.json"
     owner: "{{ workstation_username }}"
     group: "{{ workstation_group_primary }}"
-    mode: 644
+    mode: "0644"
 
   - src: "bluetooth-main.conf"
     dest: "/etc/bluetooth/main.conf"
     owner: "root"
     group: "root"
-    mode: 644
+    mode: "0644"
 
 workstation_default_rpm_repos:
   - name: "google-chrome"
@@ -66,14 +64,18 @@ workstation_default_rpm_repos:
     enabled: yes
 
 workstation_default_rpm_repo_packages:
-  - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-40.noarch.rpm"
+  - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-42.noarch.rpm"
   - "https://download.teamviewer.com/download/linux/teamviewer.x86_64.rpm"
 
 workstation_default_rpm_packages:
   - "@virtualization"
   - "awscli2"
   - "code"
-  - "bluez*"
+  - "bluez-hcidump"
+  - "bluez-hid2hci"
+  - "bluez-libs-devel"
+  - "bluez-mesh"
+  - "bluez-tools"
   - "exfat-utils"
   - "fuse-exfat"
   - "gimp"
@@ -101,7 +103,7 @@ workstation_default_required_system_templates:
     backup: no
     owner: "root"
     group: "root"
-    mode: 644
+    mode: "0644"
 
 workstation_default_required_templates:
   - src: "bashrc.j2"
@@ -109,21 +111,21 @@ workstation_default_required_templates:
     backup: no
     owner: "{{ workstation_username }}"
     group: "{{ workstation_group_primary }}"
-    mode: 644
+    mode: "0644"
 
   - src: "ssh-config.j2"
     dest: "{{ workstation_homedir }}/.ssh/config"
     backup: no
     owner: "{{ workstation_username }}"
     group: "{{ workstation_group_primary }}"
-    mode: 600
+    mode: "0600"
 
   - src: "terminator-config.j2"
     dest: "{{ workstation_homedir }}/.config/terminator/config"
     backup: no
     owner: "{{ workstation_username }}"
     group: "{{ workstation_group_primary }}"
-    mode: 640
+    mode: "0640"
 
 workstation_default_enabled_systemd_units: []
 

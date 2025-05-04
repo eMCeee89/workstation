@@ -1,12 +1,10 @@
 ---
-# tasks file for workstation
-
-- name: include vars file
-  include_vars:
+- name: Include vars file
+  ansible.builtin.include_vars:
     file: "{{ workstation_fella }}.yml"
 
-- name: interact with API
-  uri:
+- name: Interact with API
+  ansible.builtin.uri:
     url: "{{ item.url }}"
     method: "{{ item.method }}"
     body: "{{ item.body | default(omit) }}"
@@ -15,18 +13,18 @@
   register: "_api_interaction_register"
   loop: "{{ (workstation_api_interaction + workstation_default_api_interaction) | flatten(levels=1) }}"
 
-- name: set hostname
-  hostname:
+- name: Set hostname
+  ansible.builtin.hostname:
     name: "{{ workstation_hostname }}"
 
-- name: remove defined RPM packages
-  dnf:
+- name: Remove defined RPM packages
+  ansible.builtin.dnf:
     name: "{{ item }}"
     state: absent
   loop: "{{ (workstation_rpm_packages_remove + workstation_default_rpm_packages_remove) | flatten(levels=1) }}"
 
-- name: create required directory structures
-  file:
+- name: Create required directory structures
+  ansible.builtin.file:
     path: "{{ item.path }}"
     owner: "{{ item.owner }}"
     group: "{{ item.group }}"
@@ -34,8 +32,8 @@
     state: directory
   loop: "{{ (workstation_required_dirs + workstation_default_required_dirs) | flatten(levels=1) }}"
 
-- name: download required files
-  get_url:
+- name: Download required files
+  ansible.builtin.get_url:
     url: "{{ item.url }}"
     dest: "{{ item.dest }}"
     mode: "{{ item.mode }}"
@@ -43,8 +41,8 @@
     group: "{{ item.group }}"
   loop: "{{ (workstation_download_files + workstation_default_download_files) | flatten(levels=1) }}"
 
-- name: deploy required files
-  copy:
+- name: Deploy required files
+  ansible.builtin.copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ item.owner }}"
@@ -52,8 +50,8 @@
     mode: "{{ item.mode }}"
   loop: "{{ (workstation_required_files + workstation_default_required_files) | flatten(levels=1) }}"
 
-- name: add required RPM repositories
-  yum_repository:
+- name: Add required RPM repositories
+  ansible.builtin.yum_repository:
     name: "{{ item.name }}"
     description: "{{ item.description }}"
     baseurl: "{{ item.baseurl | default(omit) }}"
@@ -65,46 +63,46 @@
     state: present
   loop: "{{ (workstation_rpm_repos + workstation_default_rpm_repos) | flatten(levels=1) }}"
 
-- name: add RPM repositories from RPM package
-  dnf:
+- name: Add RPM repositories from RPM package
+  ansible.builtin.dnf:
     name: "{{ workstation_rpm_repo_packages + workstation_default_rpm_repo_packages }}"
     state: installed
     disable_gpg_check: yes
 
-- name: add RPM gpg keys
-  rpm_key:
+- name: Add RPM gpg keys
+  ansible.builtin.rpm_key:
     key: "{{ item.gpgkey|regex_replace('file://', '') }}"
     state: present
   when: item.gpgkey is defined
   loop: "{{ (workstation_rpm_repos + workstation_default_rpm_repos) | flatten(levels=1) }}"
 
-- name: install required RPM packages
-  dnf:
+- name: Install required RPM packages
+  ansible.builtin.dnf:
     name: "{{ workstation_rpm_packages + workstation_default_rpm_packages }}"
     state: installed
 
-- name: run commands as root
-  command: "{{ item }}"
+- name: Run commands as root
+  ansible.builtin.command: "{{ item }}"
   loop: "{{ (workstation_run_command_root + workstation_default_run_command_root) | flatten(levels=1) }}"
   become_user: "root"
   become: yes
   changed_when: no
 
-- name: run commands
-  command: "{{ item }}"
+- name: Run commands
+  ansible.builtin.command: "{{ item }}"
   loop: "{{ (workstation_run_command + workstation_default_run_command) | flatten(levels=1) }}"
   become_user: "{{ workstation_username }}"
 
-- name: clone repositories
-  git:
+- name: Clone repositories
+  ansible.builtin.git:
     repo: "{{ item.value.repo }}"
     dest: "{{ item.value.dest }}"
     clone: yes
   loop: "{{ (workstation_git_repositories | combine(workstation_default_git_repositories)) | dict2items }}"
   become_user: "{{ workstation_username }}"
 
-- name: deploy defined system templates
-  template:
+- name: Deploy defined system templates
+  ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     backup: "{{ item.backup }}"
@@ -115,8 +113,8 @@
   become: yes
   loop: "{{ (workstation_required_system_templates + workstation_default_required_system_templates) | flatten(levels=1) }}"
 
-- name: deploy defined templates
-  template:
+- name: Deploy defined templates
+  ansible.builtin.template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     backup: "{{ item.backup }}"
@@ -125,48 +123,48 @@
     mode: "{{ item.mode | default(omit) }}"
   loop: "{{ (workstation_required_templates + workstation_default_required_templates) | flatten(levels=1) }}"
 
-- name: create additional groups
-  user:
+- name: Create additional groups
+  ansible.builtin.user:
     name: "{{ item }}"
     state: present
   loop: "{{ (workstation_default_groups_additional_create + workstation_groups_additional_create) | flatten(levels=1) }}"
 
-- name: append user to additional groups
-  user:
+- name: Append user to additional groups
+  ansible.builtin.user:
     name: "{{ workstation_username }}"
     groups: "{{ item }}"
     append: yes
   loop: "{{ (workstation_default_groups_additional + workstation_groups_additional) | flatten(levels=1) }}"
 
-- name: enable required systemd units
-  systemd:
+- name: Enable required systemd units
+  ansible.builtin.systemd:
     name: "{{ item }}"
     enabled: yes
   loop: "{{ (workstation_enabled_systemd_units + workstation_default_enabled_systemd_units) | flatten(levels=1) }}"
 
-- name: configure kernel parameters using sysctl
-  sysctl:
+- name: Configure kernel parameters using sysctl
+  ansible.posix.sysctl:
     name: "{{ item.name }}"
     value: "{{ item.value }}"
     state: present
   loop: "{{ workstation_sysctl_parameters | flatten(levels=1) }}"
 
-- name: configure dconf settings
-  dconf:
+- name: Configure dconf settings
+  community.general.dconf:
     key: "{{ item.key }}"
     state: "{{ item.state }}"
     value: "{{ item.value }}"
   loop: "{{ (workstation_dconf + workstation_default_dconf) | flatten(levels=1) }}"
   become_user: "{{ workstation_username }}"
 
-- name: include task files
-  include_tasks: "{{ _workstation_include_task_item }}"
+- name: Include task files
+  ansible.builtin.include_tasks: "{{ _workstation_include_task_item }}"
   loop: "{{ workstation_include_tasks | flatten(levels=1) }}"
   loop_control:
     loop_var: _workstation_include_task_item
 
-- name: cleanup obsolete files
-  file:
+- name: Cleanup obsolete files
+  ansible.builtin.file:
     path: "{{ item }}"
     state: absent
   loop: "{{ (workstation_cleanup_files + workstation_default_cleanup_files) | flatten(levels=1) }}"

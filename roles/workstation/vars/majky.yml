@@ -33,7 +33,6 @@ workstation_rpm_repos:
 workstation_rpm_repo_packages: []
 
 workstation_rpm_packages:
-  - "@Vagrant with libvirt support"
   - "docker-compose"
   - "kubernetes-client"
   - "moby-engine"
@@ -45,7 +44,6 @@ workstation_rpm_packages:
   - "setroubleshoot-server"
   - "slack"
   - "telnet"
-  - "vagrant"
 
 workstation_rpm_packages_remove: []
 
