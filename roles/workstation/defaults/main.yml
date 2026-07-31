@@ -105,6 +105,13 @@ workstation_default_required_system_templates:
     group: "root"
     mode: "0644"
 
+  - src: "network.conf.j2"
+    dest: "/etc/libvirt/network.conf"
+    backup: no
+    owner: "root"
+    group: "root"
+    mode: "0644"
+
 workstation_default_required_templates:
   - src: "bashrc.j2"
     dest: "{{ workstation_homedir }}/.bashrc"
