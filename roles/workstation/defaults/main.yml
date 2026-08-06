@@ -78,6 +78,7 @@ workstation_default_rpm_packages:
   - "bluez-tools"
   - "exfat-utils"
   - "fuse-exfat"
+  - "fuse-libs"
   - "gimp"
   - "google-chrome-stable"
   - "gnome-extensions-app"
